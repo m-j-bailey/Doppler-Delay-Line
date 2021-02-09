@@ -8,6 +8,8 @@
   ==============================================================================
 */
 
+DelayLine::DelayLine() {}
+
 #include "my_doppler_delay_line.h"
 
 DelayLine::DelayLine(unsigned int maxLengthSamples)
