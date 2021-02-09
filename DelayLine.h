@@ -1,11 +1,16 @@
-/*
-  ==============================================================================
+/** BEGIN_JUCE_MODULE_DECLARATION
 
-    DelayLine.h
-    Created: 8 Feb 2021 1:54:49pm
-    Author:  maxba
+    ID:             Doppler-Delay-Line
+    vendor:         
+    version:        0.0.1
+    name:           
+    description:    Interpolated delay line.
+    website:        
+    license:        
 
-  ==============================================================================
+    dependencies:   
+
+    END_JUCE_MODULE_DECLARATION
 */
 
 #pragma once
@@ -14,22 +19,24 @@
 class DelayLine
 {
 public:
-    DelayLine();
+    DelayLine() {};
 
-    DelayLine(unsigned int maxLengthSamples);
+    DelayLine (unsigned int maxLengthSamples);
 
-    void setup(unsigned int maxLengthSamples);
+    void setup (unsigned int maxLengthSamples); // Create the buffer with 'maxLengthSamples' number of samples.
 
-    void setFractionalSamples(double fractionalSamples);
+    void setFractionalSamples (double fractionalSamples); // Set the current delay length in a fractional number of samples.
 
-    // Process function, on every update
-    float process(double input);
+    float process (float& input); // The process function, to be called once for ever sample.
 
 private:
-    double* buffer;
-    int maxBufferSampleLength;
+    juce::AudioBuffer<float> buffer;
+    unsigned int maxBufferSampleLength;
+
     double fractionalSampleLength;
 
     int writePointer;
     double readPointer;
+
+    float out = 0;
 };
