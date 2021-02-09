@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "DelayLine.h"
+#include "my_doppler_delay_line.h"
 
 DelayLine::DelayLine(unsigned int maxLengthSamples)
 {
@@ -21,7 +21,9 @@ void DelayLine::setup (unsigned int maxLengthSamples)
     writePointer = 0;
 
     maxBufferSampleLength = maxLengthSamples;
-    buffer = new double[maxBufferSampleLength];
+    
+    buffer.setSize(1, maxBufferSampleLength);
+
 }
 
 void DelayLine::setFractionalSamples (double fractionalSamples)
@@ -29,11 +31,11 @@ void DelayLine::setFractionalSamples (double fractionalSamples)
     fractionalSampleLength = fractionalSamples;
 }
 
-float DelayLine::process (double input)
+float DelayLine::process (float& input)
 {
-    buffer[writePointer] = input;
+    buffer.setSample(0, writePointer, input);
 
-    readPointer = fmod (((writePointer)-fractionalSampleLength + maxBufferSampleLength), maxBufferSampleLength);
+    readPointer = fmod ((writePointer - fractionalSampleLength + maxBufferSampleLength), maxBufferSampleLength);
 
     // Indexes used for interpolation
     int i_1 = static_cast<int> (readPointer) - 1;
@@ -55,10 +57,10 @@ float DelayLine::process (double input)
 
 
     // Fractional indexes used for reading within the buffer
-    double buffer_1 = buffer[i_1];
-    double buffer0 = buffer[i0];
-    double buffer1 = buffer[i1];
-    double buffer2 = buffer[i2];
+    double buffer_1 = buffer.getSample(0, i_1);
+    double buffer0 = buffer.getSample(0, i0);
+    double buffer1 = buffer.getSample(0, i1);
+    double buffer2 = buffer.getSample(0, i2);
 
     float f1 = readPointer - i0;
     float f0 = 1 - f1;
@@ -67,11 +69,11 @@ float DelayLine::process (double input)
     double c2 = buffer_1 - buffer0 - c3;
     double c1 = buffer1 - buffer_1;
 
-    double d0 = c3 * pow (f1, 3) + c2 * pow (f1, 2) + c1 * f1 + buffer0;
+    out = c3 * pow (f1, 3) + c2 * pow (f1, 2) + c1 * f1 + buffer0;
 
     ++writePointer;
     if (writePointer == maxBufferSampleLength)
         writePointer = 0;
 
-    return d0;
+    return out;
 }
