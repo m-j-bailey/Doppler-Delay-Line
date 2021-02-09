@@ -29,16 +29,6 @@ void DelayLine::setFractionalSamples (double fractionalSamples)
     fractionalSampleLength = fractionalSamples;
 }
 
-void DelayLine::setFeedbackGain (double gain)
-{
-    feedbackGain = gain;
-}
-
-void DelayLine::setFilterCutoff (double cutoff)
-{
-
-}
-
 float DelayLine::process (double input)
 {
     buffer[writePointer] = input;
