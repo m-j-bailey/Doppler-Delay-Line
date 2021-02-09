@@ -32,6 +32,4 @@ private:
 
     int writePointer;
     double readPointer;
-
-    double feedbackGain;
 };
