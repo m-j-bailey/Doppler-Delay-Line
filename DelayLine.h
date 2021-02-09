@@ -19,7 +19,7 @@
 class DelayLine
 {
 public:
-    DelayLine() {};
+    DelayLine();
 
     DelayLine (unsigned int maxLengthSamples);
 
