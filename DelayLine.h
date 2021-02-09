@@ -22,10 +22,6 @@ public:
 
     void setFractionalSamples(double fractionalSamples);
 
-    void setFeedbackGain(double gain);
-
-    void setFilterCutoff(double cutoff);
-
     // Process function, on every update
     float process(double input);
 
